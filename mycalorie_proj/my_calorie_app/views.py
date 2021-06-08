@@ -81,7 +81,7 @@ def add_profile(request):
         return redirect('/homepage')
   
 def Add_meal(request):
-    name = {}
+    all_foods = {}
     
     if 'name' in request.GET:
         name = request.GET['name']
@@ -89,16 +89,30 @@ def Add_meal(request):
         api_url = 'https://api.api-ninjas.com/v1/nutrition?query={}'.format(name)
 
 
-        r = requests.get(api_url, headers={'X-Api-Key': 'pFY/SNtYBMprok0WnT6l1Q==VX5UQavfvBpFrIrU'})
-        name = r.json()
-    
+        response = requests.get(api_url, headers={'X-Api-Key': 'pFY/SNtYBMprok0WnT6l1Q==VX5UQavfvBpFrIrU'})
+        data = response.json()
+        results = data['calorie']
+        
+        for i in results:
+            meal_data = Food(name = i['name'],
+                             sugar_g = i['sugar_g'],fiber_g = i['fiber_g'],
+                             serving_size_g = i['serving_size_g'],sodium_mg = i['sodium_mg'],
+                             potassium_mg = i['potassium_mg'],fat_saturated_g = i['fat_saturated_g'],
+                             fat_total_g = i['fat_total_g'],calories = i['calories'],
+                             cholesterol_mg = i['cholesterol_mg'],protein_g = i['protein_g'],
+                             carbohydrates_total_g= i['carbohydrates_total_g']
+                
+            )
+            meal_data.save()
+            all_foods = Food.objects.all()
         # return redirect('/add-meal')
     
-    results = name
+    
     context = {
-       "calorie": results
+       "calorie": all_foods
     }
-    print(results) 
+    
+    
     return render(request, 'mycalorie.html', context)    
  
 def nav(request):
