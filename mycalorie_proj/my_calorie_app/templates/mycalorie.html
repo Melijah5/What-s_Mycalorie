@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Girassol&display=swap" rel="stylesheet">
 
     <title>My calorie</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- ************CSS and bootstrap Files************* -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link hrel="font-awesome.min.css" rel="stylesheet"> {% load static %}
+    <link rel="stylesheet" href="{% static 'css/Style_calorie.css' %}">
 </head>
 
 <body>
@@ -46,8 +48,6 @@
                                 <input name="quantity" placeholder="quantity" class="form-control" type="number">
                             </div>
 
-
-
                             <div class="form-group">
                                 <label for="Meal">Meal</label>
                                 <select name="meal" class="form-control selectpicker">
@@ -64,29 +64,55 @@
                                 <input class="form-control" type="date" placeholder=" select the date" name="date">
                             </div> -->
 
-                            <button type="submit" name="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Show my calorie</button>
+                            <button type="submit" name="submit" class="btn btn-success btn-lg float-right" id="btnLogin">ADD MY MEAL</button>
                         </form>
-
-                        {% for food in all_foods %}
-                        <div>Food Name : {{food.name}} </div>
-                        <div>sugar_g: {{food.sugar_g}} </div>
-                        <div>Fiber: {{i.fiber_g}}</div>
-                        <div>serving size: {{i.serving_size_g}}</div>
-                        <div>sodium_mg: {{i.sodium_mg}} </div>
-                        <div>potassium_mg: {{i.potassium_mg}} </div>
-                        <div>fat_saturated_g: {{i.fat_saturated_g}} </div>
-                        <div>fat_total_g: {{i.fat_total_g}} </div>
-                        <div>calories: {{i.calories}} </div>
-                        <div>cholesterol_mg: {{i.cholesterol_mg}} </div>
-                        <div>protein_g: {{i.protein_g}} </div>
-                        <div>carbohydrates_total_g: {{i.carbohydrates_total_g}} </div>
-                        {% endfor %}
-
                     </div>
-
                 </div>
             </div>
         </div>
+
+
+        <div class="py-5">
+            <div class="row">
+                {% for item in items %}
+                <div class="col-lg-6 mb-5">
+                    <!-- Collapse Panel 1-->
+                    <a data-toggle="collapse" href="#lists" role="button" aria-expanded="False" aria-controls="lists" class="btn btn-primary btn-block py-2 shadow-sm with-chevron">
+                        <p class="d-flex align-items-center justify-content-between mb-0 px-3 py-2"><strong class="text-uppercase">Food Name : {{item.name}}</strong><i class="fa fa-angle-down"></i></p>
+                    </a>
+                    <div id="lists" class="collapse shadow-sm show">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <h6 class="card-subtitle mb-2 text-muted">sugar_g: {{item.sugar_g}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">Fiber: {{item.fiber_g}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">serving size: {{item.serving_size_g}}</h6>
+                                </div>
+                                <div class="row">
+                                    <h6 class="card-subtitle mb-2 text-muted">sodium_mg: {{item.sodium_mg}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">potassium_mg: {{item.potassium_mg}} </h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">fat_saturated_g: {{item.fat_saturated_g}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">fat_total_g: {{item.fat_total_g}}</h6>
+                                </div>
+                                <div class="row">
+                                    <h6 class="card-subtitle mb-2 text-muted">calories: {{item.calories}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">cholesterol_mg: {{item.cholesterol_mg}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">protein_g: {{item.protein_g}}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">carbohydrates_total_g: {{item.carbohydrates_total_g}}</h6>
+                                </div>
+                                <a href="/delete/{{item.id}}">delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+    </div>
+    </div>
 
 
     </div>

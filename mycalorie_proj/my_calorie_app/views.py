@@ -2,20 +2,21 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from .form import ProfileForm
-# from .form import ImageForm
-# from .models import Image
 from .models import User
 from .models import *
 import requests
 import bcrypt
 
 
+
 def index(request):
     return render(request, 'homepage.html')
 
+
+# >>>>>> ***************************************** Registrations ********************************
+
 def register(request):
     errors = User.objects.basic_validation(request.POST)
-    # print(request.POST)
     if len(errors) > 0:
             for key, value in errors.items():
                 messages.error(request,value)
@@ -23,15 +24,11 @@ def register(request):
   
     hash1 = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
     newuser = User.objects.create(firstname=request.POST['firstname'], lastname=request.POST['lastname'], email=request.POST['email'], password=hash1)
-    request.session['loginID']= newuser.id
-    return redirect("/homepage")
-def homepage(request):
-    if 'loginID' not in request.session:
-        return redirect('/')
-    context = {
-        'userlogged': User.objects.get(id = request.session['loginID'])
-    }
-    return render(request, 'Profile.html', context)
+    # request.session['loginID']= newuser.id
+    return redirect("/")
+
+
+# >>>>>> ***************************************** Login ********************************
 
 def user_login(request):
     userErrors = User.objects.login_validator(request.POST)
@@ -42,78 +39,133 @@ def user_login(request):
     
     user = User.objects.get(email = request.POST['email'])
     request.session['loginID'] = user.id
-    return redirect('/homepage')
+    return redirect('/user-dashboard')
 
-def logoutUser(request):
-    request.session.clear()
-    return redirect("/")
+
+# >>>>>> ***************************************** User Dashboard ********************************
+
+def Dashboard(request):
+    if 'loginID' not in request.session:
+        return redirect('/')
+ 
+    if 'loginID' in request.session:
+        # user = User.objects.filter(id=request.session['loginID'])
+        Foodset= Food.objects.filter(user_id=request.session['loginID']) 
+        cnt = Food.objects.filter(user_id=request.session['loginID']).count()  
+                
+        context = {
+                
+        'foodset': Foodset,
+        'counts' : cnt,
+        # 'user' : user
+        # 'userlogged': User.objects.get(user_id=request.session['loginID'])
+            }
+            
+        return render(request, 'Dashboard.html', context)
+    
+
+# >>>>>> ***************************************** User Profile *************************************
+
+def User_Profile(request):
+    if 'loginID' not in request.session:
+        return redirect('/')
+    context = {
+        'userlogged': User.objects.get(id = request.session['loginID'])
+    }
+    return render(request, 'Profile.html', context)
+
+
+
 
 def add_profile(request):
-  
+    if 'loginID' not in request.session:
+        return redirect('/')
+    
     if request.method == 'POST': 
         age = request.POST['age']
         gender = request.POST['gender']
         height = request.POST['height']
         weight = request.POST['weight']
-        # profile_pic = request.POST['profile_pic']
-        activity = request.POST['activity']
-        
-        # BMI = weight / (height/100)**2
-        ProfileSetting.objects.create(age=age , gender=gender, height=height, weight=weight,  activity=activity)
-        
-              
-
-        # print(f"You BMI is {BMI}")
-
-        # if BMI <= 18.4:
-        #     print("You are underweight.")
-        # elif BMI <= 24.9:
-        #     print("You are healthy.")
-        # elif BMI <= 29.9:
-        #     print("You are over weight.")
-        # elif BMI <= 34.9:
-        #     print("You are severely over weight.")
-        # elif BMI <= 39.9:
-        #     print("You are obese.")
-        # else:
-        #     print("You are severely obese.")
+        activity = request.POST['activity']       
+        ProfileSetting.objects.create(user=User.objects.get(id=request.session['loginID']), age=age , gender=gender, height=height, weight=weight,  activity=activity)
             
-        return redirect('/homepage')
+        return redirect('/User_Profile')
+    
+    
+# >>>>>> ***************************************** Add Meal from External AIP and save to sqlite *************************************
   
 def Add_meal(request):
+    
+    # if request.method == 'POST':
+    #     quantity = request.POST['quantity']
+    #     meal = request.POST['meal']
+    #     date = request.POST['date']
+    if 'loginID' not in request.session:
+        return redirect('/')     
+    
+    
+    # user = User.objects.get(id=request.session['user_id'])
+    
     all_foods = {}
     
     if 'name' in request.GET:
-        name = request.GET['name']
-    
-        api_url = 'https://api.api-ninjas.com/v1/nutrition?query={}'.format(name)
-
-
-        response = requests.get(api_url, headers={'X-Api-Key': 'pFY/SNtYBMprok0WnT6l1Q==VX5UQavfvBpFrIrU'})
-        data = response.json()
-        results = data['calorie']
         
-        for i in results:
-            meal_data = Food(name = i['name'],
-                             sugar_g = i['sugar_g'],fiber_g = i['fiber_g'],
-                             serving_size_g = i['serving_size_g'],sodium_mg = i['sodium_mg'],
-                             potassium_mg = i['potassium_mg'],fat_saturated_g = i['fat_saturated_g'],
-                             fat_total_g = i['fat_total_g'],calories = i['calories'],
-                             cholesterol_mg = i['cholesterol_mg'],protein_g = i['protein_g'],
-                             carbohydrates_total_g= i['carbohydrates_total_g']
+        name = request.GET['name']
+        
+        url = "https://calorieninjas.p.rapidapi.com/v1/nutrition"
+
+        querystring = {"query": name }
+
+        headers = {
+            'x-rapidapi-key': "6e9c9a10b3mshed5fde96db16b37p149609jsn35fb89b0ec76",
+            'x-rapidapi-host': "calorieninjas.p.rapidapi.com"
+            }
+
+        response = requests.request("GET", url, headers=headers, params=querystring)
                 
-            )
+       
+        data = response.json()
+        result = data ['items']
+        
+        print(result)
+        
+        for i in result:
+            meal_data = Food(name = i['name'],
+                             calories = i['calories'],
+                             serving_size_g = i['serving_size_g'],
+                             fat_total_g = i['fat_total_g'],
+                             fat_saturated_g = i['fat_saturated_g'],
+                             protein_g = i['protein_g'],
+                             sodium_mg = i['sodium_mg'],
+                             potassium_mg = i['potassium_mg'],
+                             cholesterol_mg = i['cholesterol_mg'],
+                             carbohydrates_total_g= i['carbohydrates_total_g'],
+                             fiber_g = i['fiber_g'],
+                             sugar_g = i['sugar_g'],
+                             user=User.objects.get(id=request.session['loginID'])
+        
+            ) 
             meal_data.save()
-            all_foods = Food.objects.all()
-        # return redirect('/add-meal')
-    
-    
+      
+        all_foods = Food.objects.all().order_by('-id')
+        
     context = {
-       "calorie": all_foods
+       "items": all_foods
+       
     }
     
     
-    return render(request, 'mycalorie.html', context)    
- 
-def nav(request):
-    return render(request, 'nav.html')
+    return render(request, 'mycalorie.html', context)  
+
+# >>>>>> ***************************************** Delete Meal *************************************
+
+def delete(request, id):
+    Food.objects.get(id=id).delete()
+    return redirect('/')
+
+
+# >>>>>> ***************************************** Logout *****************************************
+
+def logoutUser(request):
+    request.session.clear()
+    return redirect("/")

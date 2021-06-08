@@ -30,6 +30,10 @@ h1 {
     background-repeat: no-repeat;
 }
 
+#message {
+    color: red;
+}
+
 .main {
     padding: 0px 10px;
 }

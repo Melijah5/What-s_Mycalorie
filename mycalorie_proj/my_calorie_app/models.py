@@ -1,5 +1,6 @@
 from django.db import models
 import re , bcrypt
+import datetime
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
@@ -8,6 +9,7 @@ class UserManager(models.Manager):
         errors ={}
         if not post_data['firstname'] or not post_data['lastname'] or not post_data['password'] or not post_data['email']:
             errors['fieldes_required'] = 'all fields are required'
+            return errors
         if len(post_data ['firstname']) < 2:
             # print('The firstname is less than 2 char!')
             errors['firstname'] = 'First name must be at least 2 char!'
@@ -45,8 +47,6 @@ class UserManager(models.Manager):
         return loginErrors
 
     
-
-
 class User(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
@@ -55,16 +55,30 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+       
+    objects = UserManager()
+    
     def __str__(self):
         return f"{self.firstname} {self.lastname} {self.email}"
     
-    objects = UserManager()
-    
-    
-# class Image(models.Model):
-#     image = models.ImageField(upload_to='images/%y', null=True, blank=True)
-    
-    
+
+
+
+# >>>> *******************************user Profile ***********************    
+
+
+
+class ProfileManager(models.Model):
+    def validate_profile(self, profile_text):
+        profile_errors = {}
+        if not profile_text['age'] or not profile_text['gender'] or not profile_text['height'] or not profile_text['weight'] or not profile_text['activity']:
+            profile_errors['fieldes_required'] = 'all fields are required'
+            return profile_errors
+        
+        if int(profile_text['age']) < 1:
+            profile_text ['age'] = 'Incorrect age!'
+        return profile_errors
+        
 class ProfileSetting(models.Model):
     user = models.ForeignKey(User, related_name='ProfileSettings', on_delete=models.CASCADE)
     age = models.IntegerField(3)
@@ -79,21 +93,36 @@ class ProfileSetting(models.Model):
     def __str__(self):
         return f"{self.age}{self.gender}{self.height}{self.weight}{self.activity}"
     
+    objects = ProfileManager()
     
+    
+# >>>> *******************************  Food ************************* 
+
+   
 class Food(models.Model):
     
+    # profile = models.ForeignKey(ProfileSetting, related_name='foods', on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User,related_name='foods', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     calories = models.FloatField(default = 0)
     serving_size_g = models.FloatField(default = 0)
     fat_total_g = models.FloatField(default = 0)
     fat_saturated_g = models.FloatField(default = 0)
-    fat_total_g = models.FloatField(default = 0)
-    carbohydrates_total_g = models.FloatField(default = 0)
-    cholesterol_mg = models.FloatField(default = 0)
+    protein_g = models.FloatField(default = 0) 
     sodium_mg = models.FloatField(default = 0)
+    potassium_mg = models.FloatField(default = 0)
+    cholesterol_mg = models.FloatField(default = 0)
+    carbohydrates_total_g = models.FloatField(default = 0)
     fiber_g = models.FloatField(default = 0)
     sugar_g = models.FloatField(default = 0)
-    protein_g = models.FloatField(default = 0)
+    # quantity = models.IntegerField(default = 1)
+    # meal = models.CharField(max_length=255)
+    # date = models.DateField(default= datetime.date.today)
+    created_at = models.DateTimeField(auto_now=True )
+    updated_at = models.DateTimeField(auto_now=True)
+    
+   
     
     def __str__(self):
         return self.name
+    
