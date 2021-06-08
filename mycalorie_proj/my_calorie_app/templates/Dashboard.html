@@ -22,124 +22,149 @@
 
 <body>
     {% include 'partials/nav.html' %}
-</body>
-<h1> {{userlogged.firstname}} Dashboard</h1>
 
 
-<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
-    <div class="container-fluid">
-        <div class="header-body">
-            <!-- Card stats -->
-            <div class="row">
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Calorie Limit</h5>
-                                    <span class="h2 font-weight-bold mb-0">2000/day</span>
+    <div class="d-flex justify-content-center">
+        <h1> {{userlogged.firstname}} Dashboard</h1>
+    </div>
+
+
+
+    <div class="header bg-primary pb-8 pt-5 pt-md-8 pl-5 pb-5 mt-5">
+        <div class="container-fluid">
+            <div class="header-body">
+                <!-- Card stats -->
+                <div class="row">
+                    <div class="col-xl-2 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0"># of item Consumed</h5>
+                                        <span class="h2 font-weight-bold mb-0">{{counts}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Total Calories Consumed</h5>
-                                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                    <div class="col-xl-2 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Calorie Limit</h5>
+                                        <span class="h2 font-weight-bold mb-0">2000/day</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Left</h5>
-                                    <span class="h2 font-weight-bold mb-0">924</span>
+                    <div class="col-xl-2 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Calories Consumed</h5>
+                                        <span class="h2 font-weight-bold mb-0">2,356</span>
+                                    </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card card-stats mb-4 mb-xl-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                                    <span class="h2 font-weight-bold mb-0">49,65%</span>
+
+                    <div class="col-xl-2 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Calories Left</h5>
+                                        <span class="h2 font-weight-bold mb-0">924</span>
+                                    </div>
+
                                 </div>
 
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-6">
+                        <div class="card card-stats mb-4 mb-xl-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
+                                        <span class="h2 font-weight-bold mb-0">49,65%</span>
+                                    </div>
 
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
+    <div class="container-fluid mt-5">
 
 
 
+        <div class="card card-body ">
+            <table>
+                <tr>
+                    <th>Food</th>
+                    <th>Calories</th>
+                    <th>Fat_total_g</th>
+                    <th>Fat_saturated_g</th>
+                    <th>Protein_g</th>
+                    <th>Potassium_mg</th>
+                    <th>Fiber_g</th>
+                    <th>Sugar_g</th>
+                    <th>cholesterol_mg</th>
+                    <th>Carbohydrates_g</th>
 
-<div class="card card-body">
-    <table>
-        <tr>
-            <th>Food</th>
-            <th>calories</th>
-            <th>fat_total_g</th>
-            <th>protein_g</th>
-            <th>potassium_mg</th>
-            <th>carbohydrates_total_g</th>
-            <th>fiber_g</th>
 
-        </tr>
+                </tr>
 
-        {% if foodset %} {% for item in foodset %}
-        <tr>
-            <td>{{item.name}}</td>
-            <td>{{item.calories}}</td>
-            <td>{{item.fat_total_g}}</td>
-            <td>{{item.protein_g}}</td>
-            <td>{{item.potassium_mg}}</td>
-            <td>{{item.carbohydrates_total_g}}</td>
-            <td>{{item.fiber_g}}</td>
-        </tr>
-        {% endfor %} {% else %}
-        <h1>No record added</h1>
-        {% endif %}
-        <tr>
+                {% if foodset %} {% for item in foodset %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.calories}}</td>
+                    <td>{{item.fat_total_g}}</td>
+                    <td>{{item.fat_saturated_g}}</td>
+                    <td>{{item.protein_g}}</td>
+                    <td>{{item.potassium_mg}}</td>
+                    <td>{{item.carbohydrates_total_g}}</td>
+                    <td>{{item.fiber_g}}</td>
+                    <td>{{item.sugar_g}}</td>
+                    <td>{{item.cholesterol_mg}}</td>
 
-            <td>{{food.name}}</td>
-            <td>{{food.calories}}</td>
-            <td>{{food.fat_total_g}}</td>
-            <td>{{food.protein_g}}</td>
-            <td>{{food.potassium_mg}}</td>
-            <td>{{food.carbohydrates_total_g}}</td>
-            <td>{{food.fiber_g}}</td>
-        </tr>
+                </tr>
+                {% endfor %} {% else %}
+                <h1>No record added</h1>
+                {% endif %}
+                <tr>
 
-    </table>
-</div>
-<button type="submit" class="btn btn-success"> 
+                    <td>{{food.name}}</td>
+                    <td>{{food.calories}}</td>
+                    <td>{{food.fat_total_g}}</td>
+                    <td>{{food.protein_g}}</td>
+                    <td>{{food.potassium_mg}}</td>
+                    <td>{{food.carbohydrates_total_g}}</td>
+                    <td>{{food.fiber_g}}</td>
+                </tr>
+
+            </table>
+        </div>
+        <button type="submit" class="btn btn-success"> 
         <span class="glyphicon glyphicon-plus"><a href="/add-meal" class="nav-item nav-link"></a></span>
     </button>
 
 
-</form>
-
-</div>
+        </form>
+    </div>
+    </div>
 
 </html>

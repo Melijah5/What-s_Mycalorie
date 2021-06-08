@@ -47,21 +47,21 @@ def user_login(request):
 def Dashboard(request):
     if 'loginID' not in request.session:
         return redirect('/')
-    if 'counter' in request.session:
-        request.session['counter'] += 1
-    
-    Foodset= Food.objects.all()
-     
-    context = {
-        'foodset': Foodset
-        }
-       
-    
-    # user =User.objects.get(id=request.session['loginID'])
-    # context = {
-    #     'userlogged' : user
-    # }
-    return render(request, 'Dashboard.html', context)
+ 
+    if 'loginID' in request.session:
+        # user = User.objects.filter(id=request.session['loginID'])
+        Foodset= Food.objects.filter(user_id=request.session['loginID']) 
+        cnt = Food.objects.filter(user_id=request.session['loginID']).count()  
+                
+        context = {
+                
+        'foodset': Foodset,
+        'counts' : cnt,
+        # 'user' : user
+        # 'userlogged': User.objects.get(user_id=request.session['loginID'])
+            }
+            
+        return render(request, 'Dashboard.html', context)
     
 
 # >>>>>> ***************************************** User Profile *************************************
