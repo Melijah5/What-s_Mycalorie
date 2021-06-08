@@ -81,19 +81,15 @@ class ProfileSetting(models.Model):
     
     
 class Food(models.Model):
-    
-    name = models.CharField(max_length=255)
-    calories = models.FloatField(default = 0)
-    serving_size_g = models.FloatField(default = 0)
-    fat_total_g = models.FloatField(default = 0)
-    fat_saturated_g = models.FloatField(default = 0)
-    fat_total_g = models.FloatField(default = 0)
-    carbohydrates_total_g = models.FloatField(default = 0)
-    cholesterol_mg = models.FloatField(default = 0)
-    sodium_mg = models.FloatField(default = 0)
-    fiber_g = models.FloatField(default = 0)
-    sugar_g = models.FloatField(default = 0)
-    protein_g = models.FloatField(default = 0)
-    
-    def __str__(self):
-        return self.name
+    food_name = models.CharField(max_length=255, default = " ")
+    user = models.ForeignKey(User, related_name='foods', on_delete=models.CASCADE)
+    calorie = models.IntegerField(default = 0)
+    totalfat = models.IntegerField(default = 0)
+    saturatedfat = models.IntegerField(default = 0)
+    transferfat = models.IntegerField(default = 0)
+    carbs = models.IntegerField(default = 0)
+    cholestrol = models.IntegerField(default = 0)
+    sodium = models.IntegerField(default = 0)
+    fiber = models.IntegerField(default = 0)
+    suger = models.IntegerField(default = 0)
+    protein = models.IntegerField(default = 0)

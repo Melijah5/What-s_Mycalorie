@@ -67,9 +67,9 @@
                             <button type="submit" name="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Show my calorie</button>
                         </form>
 
-                        {% for food in all_foods %}
-                        <div>Food Name : {{food.name}} </div>
-                        <div>sugar_g: {{food.sugar_g}} </div>
+                        {% for i in calorie %}
+                        <div>Food Name : {{i.name}} </div>
+                        <h3>sugar_g: {{i.sugar_g}} </h3>
                         <div>Fiber: {{i.fiber_g}}</div>
                         <div>serving size: {{i.serving_size_g}}</div>
                         <div>sodium_mg: {{i.sodium_mg}} </div>
