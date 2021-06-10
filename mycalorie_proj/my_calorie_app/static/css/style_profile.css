@@ -4,6 +4,10 @@
     grid-template-columns: 250px 5fr 450px;
 }
 
+#areaA {
+    background: #009FFF;
+}
+
 #areaB {
     background: linear-gradient(to right, #ec2F4B, #009FFF);
     color: white;

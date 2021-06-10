@@ -1,31 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% include 'partials/nav.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-
-    <!-- ************CSS and bootstrap Files************* -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link hrel="font-awesome.min.css" rel="stylesheet"> {% load static %}
-    <link rel="stylesheet" href="{% static 'css/Style_calorie.css' %}">
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-
-    <!-- Icons -->
-    <link href="/static/assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
-    <link href="/static/assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
-</head>
 
 <body>
-    {% include 'partials/nav.html' %}
-
-
-    <div class="d-flex justify-content-center">
-        <h1> {{userlogged.firstname}} Dashboard</h1>
+    <div class="d-flex justify-content-center ">
+        <h1 style="text-transform:uppercase"> {{userlogged.firstname}} Dashboard</h1>
     </div>
 
 
@@ -65,7 +43,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Calories Consumed</h5>
-                                        <span class="h2 font-weight-bold mb-0">2,356</span>
+                                        <span class="h2 font-weight-bold mb-0">{{totalcalorie}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +56,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Calories Left</h5>
-                                        <span class="h2 font-weight-bold mb-0">924</span>
+                                        <span class="h2 font-weight-bold mb-0">{{calorieLeft}}</span>
                                     </div>
 
                                 </div>
@@ -92,7 +70,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                                        <span class="h2 font-weight-bold mb-0">49,65%</span>
+                                        <span class="h2 font-weight-bold mb-0">{{performances}}%</span>
                                     </div>
 
                                 </div>
@@ -140,31 +118,25 @@
                     <td>{{item.fiber_g}}</td>
                     <td>{{item.sugar_g}}</td>
                     <td>{{item.cholesterol_mg}}</td>
+                    <td><button type="submit " class="btn btn-danger  "><a href="/delete/{{ item.id }}">Delete</a></button></td>
 
                 </tr>
                 {% endfor %} {% else %}
                 <h1>No record added</h1>
                 {% endif %}
-                <tr>
 
-                    <td>{{food.name}}</td>
-                    <td>{{food.calories}}</td>
-                    <td>{{food.fat_total_g}}</td>
-                    <td>{{food.protein_g}}</td>
-                    <td>{{food.potassium_mg}}</td>
-                    <td>{{food.carbohydrates_total_g}}</td>
-                    <td>{{food.fiber_g}}</td>
-                </tr>
 
             </table>
+
         </div>
         <button type="submit" class="btn btn-success"> 
-        <span class="glyphicon glyphicon-plus"><a href="/add-meal" class="nav-item nav-link"></a></span>
-    </button>
+        <span ><a href="/add-meal" class="nav-item nav-link">Add</a></span>
+        </button>
 
 
         </form>
     </div>
     </div>
+</body>
 
 </html>

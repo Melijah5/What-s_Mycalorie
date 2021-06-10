@@ -1,0 +1,33 @@
+{% include 'header.html' %}
+
+<div class="container">
+    <form class="form-group" action="add-blog" method="post">
+        {% csrf_token %}
+        <h2>Post a message</h2>
+        <textarea class="form-control" id="blog" name="blog_text" cols="100" rows="3"></textarea>
+        <button type="submit" class="btn  btn-primary ">Post a message</button>
+    </form>
+    {% for blog in all_blogs %}
+    <ul>
+        <p>{{blog.user.firstname}} {{blog.user.lastname}} posted @ {{blog.updated_at}}</p>
+        <p>{{blog.text}}</p> {% if request.session.userID == blog.user.id %}
+        <span><a href="/edit/{{blog.id}}">Edit</a></span> |
+        <span><a href="/delete/{{blog.id}}">Delete</a></span> {% endif %} {% for comment in blog.comments.all %}
+    </ul>
+
+
+    <p>
+        {{comment.user.firstname}} {{comment.user.lastname}}commented @ {{ comment.created_at}} </p>
+    <p>{{comment.text}} </p>
+    {% endfor %}
+
+
+    <form class="form-group" action="/add-comment" method="post">
+        {% csrf_token %}
+        <h2>Add comment </h2>
+        <textarea class="form-control" name="comment_text" cols="100" rows="1"></textarea>
+        <input type="hidden" name="blog_id" value="{{ blog.id }}" />
+        <button type="submit" class="btn  btn-primary ">Post a comment</button>
+    </form>
+</div>
+<hr> {% endfor %}

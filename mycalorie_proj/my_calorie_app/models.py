@@ -77,16 +77,15 @@ class ProfileManager(models.Model):
         
         if int(profile_text['age']) < 1:
             profile_text ['age'] = 'Incorrect age!'
-        return profile_errors
+            return profile_errors
         
 class ProfileSetting(models.Model):
-    user = models.ForeignKey(User, related_name='ProfileSettings', on_delete=models.CASCADE)
-    age = models.IntegerField(3)
-    gender = models.CharField(max_length=10)
-    height = models.FloatField(10)
-    weight = models.FloatField(10)
-    # profile_pic = models.ImageField(upload_to='images/%y', default="profile1.png", null=True, blank=True)
-    activity = models.CharField(max_length=255)
+    user = models.OneToOneField(User, related_name='ProfileSettings', on_delete=models.CASCADE)
+    age = models.IntegerField(3, default= 0)
+    gender = models.CharField(max_length=10, default=None)
+    height = models.FloatField(10, default=0)
+    weight = models.FloatField(10, default=0)
+    activity = models.CharField(max_length=255, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -98,11 +97,20 @@ class ProfileSetting(models.Model):
     
 # >>>> *******************************  Food ************************* 
 
+class Picture(models.Model):
+    profile_pic = models.FileField(upload_to='user_images', default='/static/css/image/default.png')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.OneToOneField(User, related_name='pictures', on_delete=models.CASCADE, primary_key=True)
+
+    
+    
+# >>>> *******************************  Food ************************* 
+
    
 class Food(models.Model):
     
-    # profile = models.ForeignKey(ProfileSetting, related_name='foods', on_delete=models.CASCADE, default=1)
-    user = models.ForeignKey(User,related_name='foods', on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='foods', on_delete=models.CASCADE, default=None)
     name = models.CharField(max_length=255)
     calories = models.FloatField(default = 0)
     serving_size_g = models.FloatField(default = 0)
@@ -115,9 +123,6 @@ class Food(models.Model):
     carbohydrates_total_g = models.FloatField(default = 0)
     fiber_g = models.FloatField(default = 0)
     sugar_g = models.FloatField(default = 0)
-    # quantity = models.IntegerField(default = 1)
-    # meal = models.CharField(max_length=255)
-    # date = models.DateField(default= datetime.date.today)
     created_at = models.DateTimeField(auto_now=True )
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -126,3 +131,26 @@ class Food(models.Model):
     def __str__(self):
         return self.name
     
+class BlogManager(models.Manager):
+    def validate_blog(self, blog_text):
+        errors = {}
+        if len(blog_text)<2:
+            errors['length'] = 'Blog must be  between 2 - 250 character'
+        if len(blog_text)>250: 
+            errors['length'] = 'Blog must be  between 2 - 250 character'
+        return errors
+
+class Blog(models.Model):
+  text = models.CharField(max_length=280)
+  user = models.ForeignKey(User, related_name="blogs", on_delete=models.CASCADE)
+  created_at = models.DateTimeField(auto_now_add=True, null=True)
+  updated_at = models.DateTimeField(auto_now=True, null=True)
+  
+  objects = BlogManager()
+  
+class Comment(models.Model):
+  text = models.CharField(max_length=280)
+  user = models.ForeignKey(User, related_name="comments", on_delete=models.CASCADE)
+  blog = models.ForeignKey(Blog, related_name="comments", on_delete=models.CASCADE)
+  created_at = models.DateTimeField(auto_now_add=True, null=True)
+  updated_at = models.DateTimeField(auto_now=True, null=True)
