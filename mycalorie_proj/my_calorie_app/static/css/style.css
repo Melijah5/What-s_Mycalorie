@@ -2,10 +2,21 @@ body {
     font-family: "Lato", sans-serif;
 }
 
+.jumbotron {
+    padding: 6rem 2rem;
+    border-radius: 2rem;
+}
+
 h1 {
     text-align: center;
     font-size: 1.5em;
     color: rgb(255, 255, 255);
+    font-family: 'Alfa Slab One', cursive;
+}
+
+.mt-5,
+.my-5 {
+    margin-top: 7rem!important;
 }
 
 .main-head {
@@ -19,13 +30,17 @@ h1 {
     padding-top: 100px;
 }
 
+label {
+    color: rgb(255, 255, 255);
+}
+
 .sidenav {
     height: 100%;
     background-color: rgb(255, 255, 255);
     overflow-x: hidden;
     width: 46%;
     padding-top: 20px;
-    background-image: url("image/about.jpg");
+    background-image: url("image/about.png");
     background-position: center;
     background-repeat: no-repeat;
 }
