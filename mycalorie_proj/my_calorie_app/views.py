@@ -79,29 +79,28 @@ def Dashboard(request):
 # >>>>>> ***************************************** User Profile *************************************
 
 def User_Profile(request):
+    
+    images = Picture.objects.all()
 
-    if 'loginID' not in request.session:
-        return redirect('/')
-    if 'loginID' in request.session:
-        
-        context = {
-            'userlogged': User.objects.get(id = request.session['loginID'])
-        }
+    context = {
+        'images': images,
+        'userlogged': User.objects.get(id = request.session['loginID'])
+    }
     return render(request, 'Profile.html', context)
 
 def add_profile(request):
        
     if request.method == 'POST':
-        # firstname = request.POST['firstname']
-        # lastname = request.POST['lastname']
-        # email = request.POST['email'] 
         age = request.POST['age']
         gender = request.POST['gender']
         height = request.POST['height']
         weight = request.POST['weight']
-        activity = request.POST['activity'] 
-        new_user= ProfileSetting.objects.create(user=User.objects.get(id=request.session['loginID']), age=age , gender=gender, height=height, weight=weight,  activity=activity)
-        new_file=Picture(profile_pic=request.FILES['image'], user=new_user)   
+        activity = request.POST['activity']
+        # profile_id = request.POST['profile_id']
+        user = User.objects.get(id = request.session['loginID'])
+        # profilesetting =ProfileSetting.objects.get(id = profile_id)
+        new_profile = ProfileSetting.objects.create(user=user, age=age , gender=gender, height=height, weight=weight,  activity=activity)
+        new_file= Picture(file=request.FILES['image'], profilesetting=new_profile, user=user)   
         new_file.save()
             
     return redirect('/add-profile')
@@ -249,7 +248,7 @@ def add_comment(request):
         blog = Blog.objects.get(id=blog_id)
         Comment.objects.create(text=comment_text, user=user , blog=blog)
    
-    return redirect('/')
+        return redirect(f'/blog')
 
 
 
@@ -258,7 +257,7 @@ def add_comment(request):
 def delete_blog(request, blog_id):
     myblog= Blog.objects.get(id=blog_id)
     myblog.delete()
-    return redirect('/blog')
+    return redirect('/add-blog')
 
 
 # >>>>>> ***************************************** Logout *****************************************

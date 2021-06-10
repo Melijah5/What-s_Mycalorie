@@ -98,10 +98,11 @@ class ProfileSetting(models.Model):
 # >>>> *******************************  Food ************************* 
 
 class Picture(models.Model):
-    profile_pic = models.FileField(upload_to='user_images', default='/static/css/image/default.png')
+    file = models.FileField(upload_to='user_images', default='/static/css/image/default.png')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    user = models.OneToOneField(User, related_name='pictures', on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(User, related_name='pictures', on_delete=models.CASCADE)
+    profilesetting =models.OneToOneField(ProfileSetting, related_name='pictures', on_delete=models.CASCADE, default=None)
 
     
     

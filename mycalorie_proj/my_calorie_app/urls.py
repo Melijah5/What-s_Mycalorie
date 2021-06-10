@@ -8,10 +8,8 @@ urlpatterns = [
     path('logout/', views.logoutUser),
     path('add-meal', views.Add_meal),
     path('user-dashboard', views.Dashboard),
-    # path('delete-meal', views.delete_meal),
     path('add-profile', views.add_profile),
     path('delete/<int:id>', views.delete),
-    
     path('blog', views.blog),
     path('add-blog', views.add_blog),
     path('edit/<int:blog_id>', views.edit_blog),

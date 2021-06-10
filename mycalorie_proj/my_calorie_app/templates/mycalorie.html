@@ -7,7 +7,7 @@
             <div class="col-sm">
                 <div class="card ">
                     <div class="card-header bg-primary">
-                        <h3 class="mb-0">What do you like to eat ...</h3>
+                        <h3 class="mb-0">Calculate your food nutritions ...</h3>
                         <!-- <h3 class="mb-0">your helight {{userlogged}} and your web </h3>
                         <h4>{{userlogged.firstname}}</h4> -->
                         <p class="text-muted font-size-sm"> {{userlogged.firstname}} {{userlogged.lastname}}</p>
@@ -16,7 +16,7 @@
                         <form class="form" action="/add-meal" method="get">
                             {% csrf_token %}
                             <div class="container mt-4">
-                                <h3 class="heading mt-5 text-center">Search any food here you like to eat?</h3>
+                                <h3 class="heading mt-5 text-center">Search your food here .... </h3>
                                 <div class="form-group">
                                     <input class="form-control input-lg" type="text" id="name" name="name" placeholder="What kind of food you ate?" required>
                                 </div>
