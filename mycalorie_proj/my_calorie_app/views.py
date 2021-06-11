@@ -182,19 +182,14 @@ def delete(request, id):
 # >>>>>> ***************************************** blog *****************************************
 
 def blog(request):
-    if 'loginID' not in request.session:
-        return redirect('/')
-    # context = {
-    #     'userlogged': User.objects.get(id = request.session['loginID'])
-    # }
-    if 'loginID' in request.session:
-        blogs = Blog.objects.all().order_by('-id')
-        comments = Comment.objects.all().order_by('-id')
-        user = User.objects.get(id= request.session['loginID'])
-        context = {
-            'blogs':blogs,
-            'comments': comments,
-            'user': user
+    
+    blogs = Blog.objects.all().order_by('-id')
+    comments = Comment.objects.all().order_by('-id')
+    user = User.objects.get(id= request.session['loginID'])
+    context = {
+        'blogs':blogs,
+        'comments': comments,
+        'user': user
         }
     
     
@@ -226,7 +221,7 @@ def edit_blog(request, blog_id):
     context = {
         "blog" : blog_to_edit
     }
-    return render(request, 'edit-blog.html', context)
+    return render(request, 'edit_blog.html', context)
 
 
 # >>>>>> ***************************************** modify_blog *****************************************
@@ -235,20 +230,19 @@ def modify_blog(request):
         blog_id = request.POST['blog_id']
         new_blog = request.POST['blog_text']
         blog_to_edit = Blog.objects.get(id=blog_id)
-        blog_to_edit.text - new_blog
+        blog_to_edit.text = new_blog
         blog_to_edit.save()
         return redirect('/blog')
 
 # >>>>>> ***************************************** add_comment *****************************************
 def add_comment(request):
-    if request.method == 'POST':
         comment_text = request.POST['comment_text']
         blog_id = request.POST['blog_id']
         user = User.objects.get(id = request.session['loginID'])
         blog = Blog.objects.get(id=blog_id)
         Comment.objects.create(text=comment_text, user=user , blog=blog)
    
-        return redirect(f'/blog')
+        return redirect(f'/add-blog')
 
 
 
@@ -257,7 +251,7 @@ def add_comment(request):
 def delete_blog(request, blog_id):
     myblog= Blog.objects.get(id=blog_id)
     myblog.delete()
-    return redirect('/add-blog')
+    return redirect('/')
 
 
 # >>>>>> ***************************************** Logout *****************************************

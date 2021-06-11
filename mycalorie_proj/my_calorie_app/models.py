@@ -144,6 +144,7 @@ class BlogManager(models.Manager):
 class Blog(models.Model):
   text = models.CharField(max_length=280)
   user = models.ForeignKey(User, related_name="blogs", on_delete=models.CASCADE)
+#   like = models.ManyToManyField(User, related_name ='likes')
   created_at = models.DateTimeField(auto_now_add=True, null=True)
   updated_at = models.DateTimeField(auto_now=True, null=True)
   

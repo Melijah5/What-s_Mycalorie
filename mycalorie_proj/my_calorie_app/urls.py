@@ -14,7 +14,7 @@ urlpatterns = [
     path('add-blog', views.add_blog),
     path('edit/<int:blog_id>', views.edit_blog),
     path('modify-blog', views.modify_blog),
-    path('delete/<int:blog_id>', views.delete_blog),
+    path('erase/<int:blog_id>', views.delete_blog),
     path('add-comment', views.add_comment)
     
 ]
