@@ -8,12 +8,20 @@
         <button type="submit" class="btn  btn-primary ">Post a message</button>
     </form>
 
+    {% for blog in all_blogs %}
+    <ul>
+        <div class="friend-img"><img src="/static/css/image/default.png" width='50px' height="50px" style="display:inline" alt="">
+            <p>{{blog.user.firstname}} {{blog.user.lastname}} | posted @ {{blog.updated_at}}</p>
+            <p>{{blog.text}}</p> {% if blog.user.id == request.session.loginID %}
+            <a href="/edit/{{blog.id}}">Edit</a> |
+            <a href="/erase/{{blog.id}}">Delete</a> {% endif %}</div>
+    </ul>
 
-    {% for blog in all_blogs %} {{blog.user.firstname}} {{blog.user.lastname}} | posted @ {{blog.updated_at}}
-    <p>{{blog.text}}</p> {% if blog.user.id == request.session.userID %} {% endif %}
 
-    <span><a href="/edit/{{blog.id}}">Edit</a></span> |
-    <span><a href="/delete/{{blog.id}}">Delete</a></span>
+    {% for comment in blog.comments.all %} {% if comment.blog.id == blog.id %}
+    <p>{{comment.user.firstname}} {{comment.user.lastname}}| commented @ {{ comment.created_at}} </p>
+    <p>{{comment.text}} </p>
+    {% endif %} {% endfor %}
 
 
     <form class="form-group" action="/add-comment" method="post">
@@ -23,12 +31,8 @@
         <input type="hidden" name="blog_id" value="{{ blog.id }}" />
         <button type="submit" class="btn  btn-primary ">Post a comment</button>
     </form>
+    {% endfor %}
 
 
-    {% for comment in blog.comments.all %}
-
-    <p>{{comment.user.firstname}} {{comment.user.lastname}} | commented @ {{ comment.created_at}} </p>
-    <p>{{comment.text}} </p>
-    {% endfor %} {% endfor %}
 
 </div>
