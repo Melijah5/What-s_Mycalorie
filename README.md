@@ -1,11 +1,14 @@
 # What-s_Mycalorie
 
-
+wire Frame of my calorie app
 ![final_project_wireframe](https://user-images.githubusercontent.com/42394402/121767058-dd6dbc80-cb0a-11eb-81c2-019daf4b92dd.png)
+
+
+pages
 
 ![landing](https://user-images.githubusercontent.com/42394402/121767003-8c5dc880-cb0a-11eb-8165-2ff59579378b.jpg)
 
-![Dashboard_1](https://user-images.githubusercontent.com/42394402/121767013-9d0e3e80-cb0a-11eb-8537-2d7bf3ea3870.jpg)
+![Dashboard_1](https://user-images.githubusercontent.com/42394402/121767169-7ac8f080-cb0b-11eb-8e40-9b6dcd0c7a98.jpg)
 
 ![Dashboard_2](https://user-images.githubusercontent.com/42394402/121767015-a0092f00-cb0a-11eb-9721-7b2001e03286.jpg)
 
