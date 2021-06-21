@@ -1,6 +1,6 @@
 # What-s_Mycalorie
 
-wire Frame of my calorie app
+wireframe of my calorie app
 ![final_project_wireframe](https://user-images.githubusercontent.com/42394402/121767058-dd6dbc80-cb0a-11eb-81c2-019daf4b92dd.png)
 
 
